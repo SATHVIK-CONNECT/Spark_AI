@@ -82,20 +82,20 @@ with tabs[0]:
     with col1:      
         st.markdown("""<h4>Welcome to Spark AI!</h4>
                     <p style="text-align: justify;">Unlock the power of AI-driven image and file analysis with our innovative application. Sparkis designed to simplify complex tasks, providing accurate and efficient results.</p>""", unsafe_allow_html=True)
-    st.markdown("""<hr>""", unsafe_allow_html=True)
-    st.image(image="slide1.webp")
-    st.markdown("""<h4>Retrieval Augumented Generation</h4>
-                    <p style="text-align: justify;">The Retrieval-Augmented Generation (RAG) framework leverages hybrid retrieval-generation techniques to produce more accurate and informative responses. By combining the strengths of retrieval and generation models, RAG enables knowledge-augmented language generation, where relevant facts and information are seamlessly integrated into the generated text. This approach facilitates generative retrieval, 
-                    allowing the model to retrieve and generate text in a single, unified framework. Ultimately, RAG has the potential to revolutionize natural language processing and language generation, enabling the development of more sophisticated and knowledgeable AI systems.</p><hr>""", unsafe_allow_html=True)        
-    st.markdown("""<h4>Advantages of the Spark AI</h4>
-                    <p style="text-align: justify;">It simplifies daily life tasks by using AI, generates the anlyzed data with in a minute. It saves the time by reading all data in files using AI-driven model.</p>""", unsafe_allow_html=True)
-    st.image(image="advantage.png")
-    st.markdown("""<hr>
-                    <h4>Explore Our Features - Get Started</h4>
-                    <h5>Vision Instruct</h5>
-                    <p style="text-align: justify;">It is used to query with images. It let us analyze the image data by using the llama model.</p>""", unsafe_allow_html=True)
-    with st.expander("V I S I O N - I N S T R U C T"):
-        st.write(vision[0])
+        st.markdown("""<hr>""", unsafe_allow_html=True)
+        st.image(image="slide1.webp")
+        st.markdown("""<h4>Retrieval Augumented Generation</h4>
+                        <p style="text-align: justify;">The Retrieval-Augmented Generation (RAG) framework leverages hybrid retrieval-generation techniques to produce more accurate and informative responses. By combining the strengths of retrieval and generation models, RAG enables knowledge-augmented language generation, where relevant facts and information are seamlessly integrated into the generated text. This approach facilitates generative retrieval, 
+                        allowing the model to retrieve and generate text in a single, unified framework. Ultimately, RAG has the potential to revolutionize natural language processing and language generation, enabling the development of more sophisticated and knowledgeable AI systems.</p><hr>""", unsafe_allow_html=True)        
+        st.markdown("""<h4>Advantages of the Spark AI</h4>
+                        <p style="text-align: justify;">It simplifies daily life tasks by using AI, generates the anlyzed data with in a minute. It saves the time by reading all data in files using AI-driven model.</p>""", unsafe_allow_html=True)
+        st.image(image="advantage.png")
+        st.markdown("""<hr>
+                        <h4>Explore Our Features - Get Started</h4>
+                        <h5>Vision Instruct</h5>
+                        <p style="text-align: justify;">It is used to query with images. It let us analyze the image data by using the llama model.</p>""", unsafe_allow_html=True)
+    # with st.expander("V I S I O N - I N S T R U C T"):
+    #     st.write(vision[0])
 
     st.markdown("""
        <h5>File Query</h5>
