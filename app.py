@@ -20,7 +20,7 @@ import tempfile
 st.set_page_config(page_title="Spark AI", page_icon="⚡")
 
 # Set up Groq API Key
-os.environ['GROQ_API_KEY'] = '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'
+os.environ['GROQ_API_KEY'] = GROQ_API
 
 # Styling
 canvas = st.markdown("""
