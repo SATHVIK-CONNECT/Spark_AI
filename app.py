@@ -141,14 +141,14 @@ with tabs[2]:
 
 
    prompt = ChatPromptTemplate.from_template(
-    
+   """
        Answer the questions based on the provided context only.
        Please provide the most accurate response based on the question.
        <context>
        {context}
        <context>
        Questions: {input}
-        
+   """    
    )
 
     def create_vector_db_out_of_the_uploaded_pdf_file(pdf_file):
