@@ -57,6 +57,7 @@ st.title("⚡Spark AI")
 tab_titles = [
     "Home",
     "Vision Instruct",
+    "File Query",
     "About",
 ]
 
@@ -94,15 +95,15 @@ with tabs[0]:
                         <h4>Explore Our Features - Get Started</h4>
                         <h5>Vision Instruct</h5>
                         <p style="text-align: justify;">It is used to query with images. It let us analyze the image data by using the llama model.</p>""", unsafe_allow_html=True)
-    # with st.expander("V I S I O N - I N S T R U C T"):
-    #     st.write(vision[0])
-
-    # st.markdown("""
-    #    <h5>File Query</h5>
-    #    <p style="text-align: justify;">It is used to query with files. It let us analyze the files like PDF, TXT and so on by using the llama model.</p>
-    # """, unsafe_allow_html=True)
-    # with st.expander("F I L E - Q U E R Y"):
-    #    st.write(file[0])
+        with st.expander("V I S I O N - I N S T R U C T"):
+            st.write(vision[0])
+    
+        st.markdown("""
+           <h5>File Query</h5>
+           <p style="text-align: justify;">It is used to query with files. It let us analyze the files like PDF, TXT and so on by using the llama model.</p>
+        """, unsafe_allow_html=True)
+        with st.expander("F I L E - Q U E R Y"):
+           st.write(file[0])
 
 with tabs[1]:
     #upload file
@@ -135,7 +136,7 @@ with tabs[2]:
    st_lottie(pdf_analyze)   
 
 
-   groq_api_key = GROQ_API
+   groq_api_key = "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"
 
    llm = ChatGroq(groq_api_key=groq_api_key, model_name="Llama3-8b-8192")
 
@@ -227,10 +228,9 @@ with tabs[3]:
     col5, col6 = st.columns(2, gap="large", vertical_alignment="center")
     with col5:
         st.markdown("""        <ul> 
-            <h3>Project Development Group Details</h3>
-            <h4>Team Members</h4>
+            <h3>Project Development Details</h3>
+            <h4>Developer</h4>
             <li>Sathvik Palivela</li>
-            <li>Ravi Kiran Rayudu</li>          
         </ul>
         <ul>
             <h4>Mentor</h4>
