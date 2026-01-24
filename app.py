@@ -100,8 +100,8 @@ with tabs[0]:
     st.markdown("""
        <h5>File Query</h5>
        <p style="text-align: justify;">It is used to query with files. It let us analyze the files like PDF, TXT and so on by using the llama model.</p>
-   """, unsafe_allow_html=True)
-   with st.expander("F I L E - Q U E R Y"):
+    """, unsafe_allow_html=True)
+    with st.expander("F I L E - Q U E R Y"):
        st.write(file[0])
 
 with tabs[1]:
