@@ -127,7 +127,7 @@ with tabs[1]:
                         output = generate(uploaded_file, 'What is in this picture?')
                 st.subheader('Result:')
                 st.write(output)
- with tabs[2]:        
+with tabs[2]:        
    def pdf_analyze(pdf_analyze="pdf_analyze.json"):
        with open(pdf_analyze, "r", encoding='UTF-8') as f:
            return json.load(f)
