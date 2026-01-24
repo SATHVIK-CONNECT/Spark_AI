@@ -132,11 +132,17 @@ with tabs[2]:
    pdf_analyze = pdf_analyze()
    st_lottie(pdf_analyze)   
 
-
-   groq_api_key = "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"
-
-   llm = ChatGroq(groq_api_key=groq_api_key, model_name="Llama3-8b-8192")
-
+   llm = ChatGroq(
+        # Fetch the key from Streamlit Secrets
+        groq_api_key=st.secrets["GROQ_API_KEY"], 
+        model_name="llama-3.1-8b-instant",
+        temperature=0,
+        # This specifically prevents the 'reasoning_format' TypeError
+        # by ensuring no extra parameters are passed to the base client
+        model_kwargs={
+            "extra_body": {}
+        }
+   )
 
    prompt = ChatPromptTemplate.from_template(
    """
