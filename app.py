@@ -151,7 +151,7 @@ with tabs[2]:
    """    
    )
 
-    def create_vector_db_out_of_the_uploaded_pdf_file(pdf_file):
+   def create_vector_db_out_of_the_uploaded_pdf_file(pdf_file):
 
 
        if "vector_store" not in st.session_state:
