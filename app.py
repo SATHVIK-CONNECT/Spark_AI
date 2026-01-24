@@ -19,9 +19,6 @@ import tempfile
 # Layout
 st.set_page_config(page_title="Spark AI", page_icon="⚡")
 
-# Set up Groq API Key
-groq_api_key = "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"
-
 # Styling
 canvas = st.markdown("""
     <style>
@@ -32,7 +29,7 @@ canvas = st.markdown("""
 # Function to generate caption
 def generate(uploaded_image, prompt):
     base64_image = base64.b64encode(uploaded_image.read()).decode('utf-8')
-    client = Groq()
+    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
     chat_completion = client.chat.completions.create(
         messages=[
             {
