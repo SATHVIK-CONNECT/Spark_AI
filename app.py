@@ -64,6 +64,7 @@ tab_titles = [
     "Home",
     "Vision Instruct",
     "File Query",
+    "File Query",
     "About",
 ]
 
@@ -229,6 +230,8 @@ with tabs[3]:
     col5, col6 = st.columns(2, gap="large", vertical_alignment="center")
     with col5:
         st.markdown("""        <ul> 
+            <h3>Project Development Details</h3>
+            <h4>Developer</h4>
             <h3>Project Development Details</h3>
             <h4>Developer</h4>
             <li>Sathvik Palivela</li>
