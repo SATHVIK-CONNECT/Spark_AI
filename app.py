@@ -64,7 +64,6 @@ tab_titles = [
     "Home",
     "Vision Instruct",
     "File Query",
-    "File Query",
     "About",
 ]
 
