@@ -1,26 +1,32 @@
-from groq import Groq
-import base64
-import os
 import streamlit as st
-
-import json
 import os
+import tempfile
+import json
+import base64
+from groq import Groq
+
 from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_text_splitters import RecursiveCharacterTextSplitter # Updated
+
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.chains import create_retrieval_chain
+from streamlit_lottie import st_lottie
+
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+
+
+
+import langchain
+
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
-from streamlit_lottie import  st_lottie
-import tempfile
 
 # Layout
 st.set_page_config(page_title="Spark AI", page_icon="⚡")
 
 # Set up Groq API Key
-groq_api_key = GROQ_API
+# os.environ["GROQ_API_KEY"] = "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"
 
 # Styling
 canvas = st.markdown("""
@@ -32,7 +38,7 @@ canvas = st.markdown("""
 # Function to generate caption
 def generate(uploaded_image, prompt):
     base64_image = base64.b64encode(uploaded_image.read()).decode('utf-8')
-    client = Groq()
+    client = Groq(api_key=st.secrets["api_key"])
     chat_completion = client.chat.completions.create(
         messages=[
             {
@@ -57,6 +63,7 @@ st.title("⚡Spark AI")
 tab_titles = [
     "Home",
     "Vision Instruct",
+    "File Query",
     "About",
 ]
 
@@ -82,40 +89,38 @@ with tabs[0]:
     with col1:      
         st.markdown("""<h4>Welcome to Spark AI!</h4>
                     <p style="text-align: justify;">Unlock the power of AI-driven image and file analysis with our innovative application. Sparkis designed to simplify complex tasks, providing accurate and efficient results.</p>""", unsafe_allow_html=True)
-        st.markdown("""<hr>""", unsafe_allow_html=True)
-        st.image(image="slide1.webp")
-        st.markdown("""<h4>Retrieval Augumented Generation</h4>
+    st.markdown("""<hr>""", unsafe_allow_html=True)
+    st.image(image="slide1.webp")
+    st.markdown("""<h4>Retrieval Augumented Generation</h4>
                         <p style="text-align: justify;">The Retrieval-Augmented Generation (RAG) framework leverages hybrid retrieval-generation techniques to produce more accurate and informative responses. By combining the strengths of retrieval and generation models, RAG enables knowledge-augmented language generation, where relevant facts and information are seamlessly integrated into the generated text. This approach facilitates generative retrieval, 
                         allowing the model to retrieve and generate text in a single, unified framework. Ultimately, RAG has the potential to revolutionize natural language processing and language generation, enabling the development of more sophisticated and knowledgeable AI systems.</p><hr>""", unsafe_allow_html=True)        
-        st.markdown("""<h4>Advantages of the Spark AI</h4>
+    st.markdown("""<h4>Advantages of the Spark AI</h4>
                         <p style="text-align: justify;">It simplifies daily life tasks by using AI, generates the anlyzed data with in a minute. It saves the time by reading all data in files using AI-driven model.</p>""", unsafe_allow_html=True)
-        st.image(image="advantage.png")
-        st.markdown("""<hr>
+    st.image(image="advantage.png")
+    st.markdown("""<hr>
                         <h4>Explore Our Features - Get Started</h4>
                         <h5>Vision Instruct</h5>
                         <p style="text-align: justify;">It is used to query with images. It let us analyze the image data by using the llama model.</p>""", unsafe_allow_html=True)
-    # with st.expander("V I S I O N - I N S T R U C T"):
-    #     st.write(vision[0])
+    with st.expander("V I S I O N - I N S T R U C T"):
+        st.write(vision[0])
 
     st.markdown("""
        <h5>File Query</h5>
        <p style="text-align: justify;">It is used to query with files. It let us analyze the files like PDF, TXT and so on by using the llama model.</p>
-   """, unsafe_allow_html=True)
-   with st.expander("F I L E - Q U E R Y"):
+    """, unsafe_allow_html=True)
+    with st.expander("F I L E - Q U E R Y"):
        st.write(file[0])
 
 with tabs[1]:
-    #upload file
-    def img_analyze(img_analyze="img_analyze.json"):
-        with open(img_analyze, "r", encoding='UTF-8') as f:
-            return json.load(f)
-    img_analyze = img_analyze()
-    st_lottie(img_analyze)
+    # def img_analyze(img_analyze="img_analyze.json"):
+    #     with open(img_analyze, "r", encoding='UTF-8') as f:
+    #         return json.load(f)
+    # img_analyze = img_analyze()
+    # st_lottie(img_analyze)
 
     uploaded_file = st.file_uploader('Upload an image', type=['jpg', 'jpeg', 'png'])
 
     if uploaded_file is not None:
-            # Show the uploaded image
             st.image(uploaded_file, caption='Uploaded Image')
             prompt = st.text_input('Enter the prompt')
 
@@ -127,99 +132,96 @@ with tabs[1]:
                         output = generate(uploaded_file, 'What is in this picture?')
                 st.subheader('Result:')
                 st.write(output)
- with tabs[2]:        
-   def pdf_analyze(pdf_analyze="pdf_analyze.json"):
-       with open(pdf_analyze, "r", encoding='UTF-8') as f:
-           return json.load(f)
-   pdf_analyze = pdf_analyze()
-   st_lottie(pdf_analyze)   
-
-
-   groq_api_key = GROQ_API
-
-   llm = ChatGroq(groq_api_key=groq_api_key, model_name="Llama3-8b-8192")
-
-
-   prompt = ChatPromptTemplate.from_template(
-    
-       Answer the questions based on the provided context only.
-       Please provide the most accurate response based on the question.
-       <context>
-       {context}
-       <context>
-       Questions: {input}
+with tabs[2]:        
+    if " ":
+        st.markdown("""<h4 style='color:#dd1100; text-align:center'>This feature is currently being updated.</h4>""", unsafe_allow_html=True)
+        st.markdown("""<h4 style='color:#dd1100; text-align:center'>Please check back later!</h4>""", unsafe_allow_html=True)
+        def pdf_analyze(file_path="error.json"):
+            with open(file_path, "r", encoding='UTF-8') as f:
+                return json.load(f)
+        st_lottie(pdf_analyze())   
         
-   )
+    else:
+        llm = ChatGroq(
+            groq_api_key=st.secrets["api_key"], 
+            model_name="llama-3.1-8b-instant", 
+            temperature=0
+        )
 
-    def create_vector_db_out_of_the_uploaded_pdf_file(pdf_file):
+        rag_prompt = ChatPromptTemplate.from_template("""
+        Answer the question based ONLY on the provided context.
+        If the answer isn't in the context, say "I don't find that in the document."
+        
+        <context>
+        {context}
+        </context>
+        
+        Question: {input}
+        """)
 
+        def process_pdf(pdf_file):
+            if "vector_store" not in st.session_state:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+                    tmp.write(pdf_file.read())
+                    tmp_path = tmp.name
 
-       if "vector_store" not in st.session_state:
+                loader = PyPDFLoader(tmp_path)
+                docs = loader.load()
+                text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+                splits = text_splitter.split_documents(docs)
 
-
-           with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-
-               temp_file.write(pdf_file.read())
-
-               pdf_file_path = temp_file.name
-
-           st.session_state.embeddings = HuggingFaceEmbeddings(model_name='BAAI/bge-small-en-v1.5', model_kwargs={'device': 'cpu'}, encode_kwargs={'normalize_embeddings': True})
-            
-           st.session_state.loader = PyPDFLoader(pdf_file_path)
-
-           st.session_state.text_document_from_pdf = st.session_state.loader.load()
-
-           st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-            
-           st.session_state.final_document_chunks = st.session_state.text_splitter.split_documents(st.session_state.text_document_from_pdf)
-
-           st.session_state.vector_store = FAISS.from_documents(st.session_state.final_document_chunks, st.session_state.embeddings)
-
-
-   pdf_input_from_user = st.file_uploader("Upload the PDF file", type=['pdf'])
-
-
-   if pdf_input_from_user is not None:
-       with st.spinner('Generating output...'):
-    
-           if pdf_input_from_user is not None:
-
-               create_vector_db_out_of_the_uploaded_pdf_file(pdf_input_from_user)
-            
-           else:
+                embeddings = HuggingFaceEmbeddings(model_name='BAAI/bge-small-en-v1.5')
                 
-               st.write("Please upload a PDF file first")
+                st.session_state.vector_store = FAISS.from_documents(splits, embeddings)
+                os.remove(tmp_path) 
 
+        pdf_upload = st.file_uploader("Upload PDF", type=['pdf'])
 
+        if pdf_upload:
+            process_pdf(pdf_upload)
+            st.success("PDF processed and indexed!")
 
-   if "vector_store" in st.session_state:
+        if "vector_store" in st.session_state:
+            st.divider()
+            user_query = st.text_input("Ask a question about the PDF:")
+            
+            if st.button('Generate Analysis', type="primary"):
+                if user_query:
+                    retriever = st.session_state.vector_store.as_retriever(
+                        search_type="similarity",
+                        search_kwargs={"k": 5} 
+                    )
 
-       user_prompt = st.text_input("Enter Your Question related to the uploaded PDF")
+                    def format_docs(docs):
+                        if not docs:
+                            return "EMPTY_CONTEXT"
+                        return "\n\n".join(doc.page_content for doc in docs)
 
-       if st.button('Generate Analysis'):
-               if user_prompt: 
-                   if "vector_store" in st.session_state:
+                    chain = (
+                        {"context": retriever | format_docs, "input": RunnablePassthrough()}
+                        | rag_prompt
+                        | llm
+                        | StrOutputParser()
+                    )
 
-                       document_chain = create_stuff_documents_chain(llm, prompt)
+                    with st.spinner('Analyzing...'):
+                        relevant_docs = retriever.invoke(user_query)
+                        
+                        if not relevant_docs:
+                            st.error("The search returned no matching text from the PDF.")
+                        else:
+                            response = chain.invoke(user_query)
+                            st.markdown("### Answer")
+                            st.write(response)
 
-                       retriever = st.session_state.vector_store.as_retriever()
-
-                       retrieval_chain = create_retrieval_chain(retriever, document_chain)
-
-                       response = retrieval_chain.invoke({'input': user_prompt})
-
-                       st.write(response['answer'])
-
-                   else:   
-
-                       st.write("Please embed the document first by uploading a PDF file.")
-
-               else:
-
-                   st.error('Please write your prompt')
+                            with st.expander("Diagnostic: See what the AI 'read'"):
+                                st.write(f"**Number of chunks found:** {len(relevant_docs)}")
+                                for i, doc in enumerate(relevant_docs):
+                                    st.info(f"Chunk {i+1}:\n\n{doc.page_content[:500]}...")
+                else:
+                    st.warning("Please enter a question.")
 
 with tabs[3]:
-    #upload file
     st.markdown("""
         <h4>About Spark AI</h4>
         <p style="text-indent: 60px; text-align: justify;"> Spark is an AI-powered application developed as part of the Applied Artificial Intelligence: Practical Implementations course  by TechSaksham Program, which is a CSR initiative by Microsoft and SAP, implemented by Edunet Foundation</p>
@@ -227,10 +229,9 @@ with tabs[3]:
     col5, col6 = st.columns(2, gap="large", vertical_alignment="center")
     with col5:
         st.markdown("""        <ul> 
-            <h3>Project Development Group Details</h3>
-            <h4>Team Members</h4>
+            <h3>Project Development Details</h3>
+            <h4>Developer</h4>
             <li>Sathvik Palivela</li>
-            <li>Ravi Kiran Rayudu</li>          
         </ul>
         <ul>
             <h4>Mentor</h4>
@@ -246,13 +247,14 @@ with tabs[3]:
     st.markdown("""<hr>
         <h4>Acknowledgements</h4>
         <p>We would like to extend our gratitude to: </p>
-        <ul><li>TechSaksham Program, a CSR initiative by Microsoft and SAP</li>
-            <li>Edunet Foundation for implementing the AI Practical Implementations course</li>
-            <li>Aziz Sir for excellent guidance and mentorship</li></ul>
+        <ul><li>TechSaksham Program, a CSR initiative by Microsoft and SAP.</li>
+            <li>Edunet Foundation for implementing the AI Practical Implementations course.</li>
+            <li>Aziz Sir for excellent guidance and mentorship.</li></ul>
         <br>
         <h4>GitHub Repository</h4>
         <p>Check our github repository - <a href='https://github.com/SATHVIK-CONNECT/Project/tree/main'>Git Repo of Spark AI</a></p>
         <br> 
         <h4>Contact Us</h4>
-        <p>For any queries or feedback, please reach out to us at <a>sathvikpalivela0@gmail.com</a>.
+        <p>For any queries or feedback, please reach out to us at <a href='mailto:sathvikpalivela0@gmail.com'>sathvikpalivela0@gmail.com</a>.
     """, unsafe_allow_html=True)
+    
