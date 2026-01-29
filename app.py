@@ -22,20 +22,14 @@ import langchain
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
 
-# Layout
 st.set_page_config(page_title="Spark AI", page_icon="⚡")
 
-# Set up Groq API Key
-# os.environ["GROQ_API_KEY"] = "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"
-
-# Styling
 canvas = st.markdown("""
     <style>
         header{ visibility: hidden; }   
     </style> """, unsafe_allow_html=True)
 
 
-# Function to generate caption
 def generate(uploaded_image, prompt):
     base64_image = base64.b64encode(uploaded_image.read()).decode('utf-8')
     client = Groq(api_key=st.secrets["api_key"])
@@ -229,8 +223,6 @@ with tabs[3]:
     col5, col6 = st.columns(2, gap="large", vertical_alignment="center")
     with col5:
         st.markdown("""        <ul> 
-            <h3>Project Development Details</h3>
-            <h4>Developer</h4>
             <h3>Project Development Details</h3>
             <h4>Developer</h4>
             <li>Sathvik Palivela</li>
